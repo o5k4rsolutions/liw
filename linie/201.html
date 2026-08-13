@@ -64,6 +64,19 @@
             opacity: 1;
             transform: translateY(0);
         }
+        @keyframes routeFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .route-animate {
+            animation: routeFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
 </head>
 <body class="bg-[#f0f0f0] text-[#222222] dark:bg-[#121212] dark:text-[#e0e0e0] min-h-screen flex flex-col justify-between">
@@ -71,7 +84,7 @@
     <header class="w-full bg-wtpRed text-white sticky top-0 z-50 shadow-md">
       <div class="bg-black/10 py-1.5 px-4 flex justify-between items-center border-b border-white/10">
     <div>
-        <a href="../rozkklady.html" class="nav-link flex items-center gap-1.5 bg-black/20 hover:bg-black/30 text-white font-semibold px-2.5 py-1 text-[11px] uppercase tracking-wider transition border border-white/20 rounded-sm cursor-pointer">
+        <a href="../rozklad-jazdy.html" class="nav-link flex items-center gap-1.5 bg-black/20 hover:bg-black/30 text-white font-semibold px-2.5 py-1 text-[11px] uppercase tracking-wider transition border border-white/20 rounded-sm cursor-pointer">
             <i class="fa-solid fa-arrow-left"></i>
             <span>Wstecz</span>
         </a>
@@ -97,7 +110,6 @@
         <section class="max-w-[1000px] mx-auto px-4 py-12">
             <div class="bg-white dark:bg-[#1e1e1e] border border-zinc-200 dark:border-zinc-800 wtp-shadow overflow-hidden">
                 
-                <!-- Nagłówek rozkładu -->
                 <div class="p-6 border-b border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
                         <div class="w-16 h-16 bg-[#d91e18] rounded-full flex items-center justify-center shrink-0 shadow-md text-white">
@@ -112,7 +124,7 @@
                             </div>
                             <div class="flex items-center gap-3 mt-1 text-sm">
                                 <button onclick="switchDirection()" class="flex items-center gap-1.5 text-wtpRed hover:text-wtpRedHover font-bold cursor-pointer transition">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" role="img" aria-label="Zmień kierunek" class="w-5 h-5">
+                                    <svg id="direction-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" role="img" aria-label="Zmień kierunek" class="w-5 h-5 transition-transform duration-300">
                                         <circle class="i-bg" fill="#E42313" cx="18" cy="18" r="18"></circle>
                                         <path class="i-fg" fill="#FFFFFF" d="M25.816,15.3c0,0.208-0.109,0.311-0.332,0.311h-10.04v2.51l-5.187-3.776l5.187-3.755v2.511h10.042 c0.222,0,0.332,0.104,0.332,0.31V15.3H25.816z M10.258,20.941c0-0.207,0.11-0.312,0.332-0.312h10.041v-2.51l5.188,3.774 l-5.188,3.756v-2.51H10.59c-0.222,0-0.332-0.104-0.332-0.313V20.941z"></path>
                                     </svg>
@@ -124,329 +136,320 @@
                     </div>
                 </div>
 
-                <!-- Trasa linii -->
                 <div class="p-6 md:p-8">
                     <div id="route-container">
-                        <!-- Kierunek 1: Metro Księcia Janusza -> Nowe Bemowo -->
-                        <div id="dir-1">
+                        <div id="dir-1" class="route-animate">
                             <div class="relative pl-8 space-y-6 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-zinc-300 dark:before:bg-zinc-700">
                                 
-                                <!-- Przystanek 1 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3.5 h-3.5 bg-black dark:bg-white rounded-none"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Metro Księcia Janusza 06</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        0 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Ciołka</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">0 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Ciołka</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 2 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Brożka 02</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        1 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Newelska</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">1 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Newelska</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 3 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Dalibora 04</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        2 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Księcia Janusz</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">2 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Księcia Janusza</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 4 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Koło 03</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        3 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Księcia Bolesława</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">3 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Księcia Bolesława</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 5 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Księcia Bolesława 01</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        5 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Obrońców Tobruku</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">5 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Obrońców Tobruku</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 6 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Os. Leśne 01</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        6 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Pieniążka</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">6 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Pieniążka</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 7 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Hala Sportowa Bemowo 01</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        7 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Osmańczyka</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">7 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Osmańczyka</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 8 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Os. Olszyny 01</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        8 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Piastów Śląskich</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">8 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Piastów Śląskich</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 9 (na żądanie) -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3.5 h-3.5 bg-white dark:bg-[#1e1e1e] border-2 border-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Osmańczyka 01 <span class="text-xs font-normal text-zinc-500">(nż)</span></span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        9 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Powstańców Śląskich</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">9 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Powstańców Śląskich</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 10 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Piastów Śląskich 02</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        11 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300"></span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">11 min</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek końcowy -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3.5 h-3.5 bg-wtpRed rounded-none"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Nowe Bemowo 15</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        13 min
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">13 min</span>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
 
-                        <!-- Kierunek 2: Nowe Bemowo -> Metro Księcia Janusza (ukryte domyślnie) -->
-                        <div id="dir-2" class="hidden">
+                        <div id="dir-2" class="hidden route-animate">
                             <div class="relative pl-8 space-y-6 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-zinc-300 dark:before:bg-zinc-700">
                                 
-                                <!-- Przystanek 1 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3.5 h-3.5 bg-black dark:bg-white rounded-none"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Nowe Bemowo 15</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        0 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Powstańców Śląskich</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">0 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Powstańców Śląskich</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 2 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Piastów Śląskich 04</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        2 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Piastów Śląskich</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">2 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Piastów Śląskich</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 3 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Os. Olszyny 02</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        3 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Osmańczyka</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">3 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Osmańczyka</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 4 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Hala Sportowa Bemowo 02</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        4 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Obrońców Tobruku</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">4 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Obrońców Tobruku</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 5 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Os. Leśne 02</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        5 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300"></span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">5 min</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 6 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Księcia Bolesława 02</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        6 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Księcia Bolesława</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">6 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Księcia Bolesława</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 7 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Koło 04</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        8 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Obozowa</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">8 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Obozowa</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 8 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Dalibora 01</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        8 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300"></span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">8 min</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 9 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Deotymy 03</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        9 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Deotymy</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">9 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Deotymy</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 10 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Ks. Sitnika 01</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        10 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300"></span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">10 min</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 11 (na żądanie) -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3.5 h-3.5 bg-white dark:bg-[#1e1e1e] border-2 border-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Park Moczydło 03 <span class="text-xs font-normal text-zinc-500">(nż)</span></span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        11 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300"></span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">11 min</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek 12 -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3 h-3 bg-wtpRed rounded-full"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Park Moczydło 02</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        11 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Górczewska</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">11 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Górczewska</span>
                                     </div>
                                 </div>
 
-                                <!-- Przystanek końcowy -->
-                                <div class="relative flex items-center justify-between text-sm">
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-1">
                                     <div class="absolute -left-8 w-6 flex justify-center">
                                         <div class="w-3.5 h-3.5 bg-wtpRed rounded-none"></div>
                                     </div>
                                     <div>
                                         <span class="font-bold text-zinc-900 dark:text-white text-base">Metro Księcia Janusza 06</span>
                                     </div>
-                                    <div class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">
-                                        11 min <span class="ml-4 font-medium text-zinc-700 dark:text-zinc-300">Ciołka</span>
+                                    <div class="flex flex-col sm:items-end">
+                                        <span class="text-zinc-500 dark:text-zinc-400 font-semibold">11 min</span>
+                                        <span class="text-xs text-zinc-600 dark:text-zinc-400">ul. Ciołka</span>
                                     </div>
                                 </div>
 
@@ -513,14 +516,27 @@
             const dir1 = document.getElementById('dir-1');
             const dir2 = document.getElementById('dir-2');
             const directionLabel = document.getElementById('direction-label');
+            const directionIcon = document.getElementById('direction-icon');
+
+            directionIcon.style.transform = 'rotate(180deg)';
+            setTimeout(() => {
+                directionIcon.style.transform = 'rotate(0deg)';
+            }, 300);
 
             if (dir1.classList.contains('hidden')) {
-                dir1.classList.remove('hidden');
+                dir2.classList.add('opacity-0', 'translate-y-3');
                 dir2.classList.add('hidden');
+                
+                dir1.classList.remove('hidden');
+                void dir1.offsetWidth;
+                dir1.classList.add('route-animate');
                 directionLabel.textContent = '» Nowe Bemowo 15';
             } else {
                 dir1.classList.add('hidden');
+                
                 dir2.classList.remove('hidden');
+                void dir2.offsetWidth;
+                dir2.classList.add('route-animate');
                 directionLabel.textContent = '» Metro Księcia Janusza 06';
             }
         }
