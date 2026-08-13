@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Przeglądarka PDF - O5K4R</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="h-full bg-white text-gray-900 flex flex-col justify-between selection:bg-blue-100 selection:text-blue-900">
+
+    <main class="flex-1 w-full max-w-6xl mx-auto p-4 sm:p-6 flex flex-col items-center justify-center">
+        <div class="w-full h-[75vh] sm:h-[80vh] bg-gray-50 rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col relative">
+            
+            <object id="pdfViewer" data="" type="application/pdf" class="w-full h-full flex-1">
+                <div class="flex flex-col items-center justify-center h-full p-6 text-center">
+                    <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+            </object>
+        </div>
+    </main>
+
+    <footer class="w-full py-6 px-4 border-t border-gray-100 bg-white text-center text-sm text-gray-600">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0">
+            <span class="font-medium text-gray-700">Zasilane przez:</span>
+            <span class="ml-1 font-semibold tracking-wide text-gray-900">O5K4R DEVELOPERS S.C. & O5K4R SOLUTIONS</span>
+        </div>
+    </footer>
+
+    <script>
+        const pdfUrl = "liw-content/Regulamin_LIW.pdf";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const viewer = document.getElementById('pdfViewer');
+            const fallbackLink = document.getElementById('pdfFallbackLink');
+
+            if (pdfUrl && pdfUrl.trim() !== "") {
+                viewer.setAttribute('data', pdfUrl);
+                fallbackLink.href = pdfUrl;
+                fallbackLink.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
