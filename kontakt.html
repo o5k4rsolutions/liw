@@ -141,14 +141,13 @@
             <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://raw.githubusercontent.com/o5k4rsolutions/liw/e148f091442cabfabb6d8b17fab3d5882b9e8543/liw-content/warsawpanorama.png');"></div>
             
             <div class="max-w-[1300px] mx-auto px-4 py-16 md:py-24 relative z-10 text-center">
-                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Kontakt</h1>
-                <p class="text-zinc-300 text-sm md:text-base max-w-xl mx-auto">Skontaktuj się z nami, zgłoś błąd techniczny lub sprawdź informacje o projekcie Life in Warsaw.</p>
+                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Kontakt i Właściciel</h1>
+                <p class="text-zinc-300 text-sm md:text-base max-w-xl mx-auto">Skontaktuj się z nami lub zgłoś problem techniczny w projekcie Life in Warsaw.</p>
             </div>
         </section>
 
         <section class="max-w-[1300px] mx-auto px-4 my-16 reveal-on-scroll">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
-                
                 <div class="bg-white dark:bg-[#1e1e1e] border border-zinc-200 dark:border-zinc-800 wtp-shadow p-8 flex flex-col justify-between">
                     <div>
                         <div class="w-12 h-12 bg-wtpRed text-white rounded-full flex items-center justify-center text-xl mb-4 shadow-md">
@@ -166,9 +165,9 @@
                         <div class="w-12 h-12 bg-[#5865F2] text-white rounded-full flex items-center justify-center text-xl mb-4 shadow-md">
                             <i class="fa-brands fa-discord"></i>
                         </div>
-                        <h2 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">Kontakt</h2>
+                        <h2 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">Kontakt Direct</h2>
                         <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed mb-6">
-                            Kontakt z Twórcą gry jest możliwy za pomocą naszego oficjalnego serwera Discord lub poprzez poniższy formularz zgłoszeniowy.
+                            Rozmawiaj bezpośrednio z społecznością i twórcami na naszym oficjalnym serwerze Discord.
                         </p>
                     </div>
                     <div>
@@ -177,48 +176,57 @@
                         </a>
                     </div>
                 </div>
-
             </div>
 
-            <div class="max-w-4xl mx-auto bg-white dark:bg-[#1e1e1e] border border-zinc-200 dark:border-zinc-800 wtp-shadow p-8 md:p-12">
-                <div class="mb-8 text-center">
-                    <div class="w-12 h-12 bg-wtpRed text-white rounded-full flex items-center justify-center text-xl mx-auto mb-4 shadow-md">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
+            <div class="max-w-4xl mx-auto bg-white dark:bg-[#1e1e1e] border border-zinc-200 dark:border-zinc-800 wtp-shadow p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-wtpRed text-white rounded-sm flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-bug"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">Zgłoszenie Wsparcia Technicznego</h2>
-                    <p class="text-zinc-600 dark:text-zinc-400 text-sm mt-2">Napotkałeś błąd w grze lub na discordzie? Wypełnij formularz, a nasze wsparcie przeanalizuje zgłoszenie.</p>
+                    <div>
+                        <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">Zgłoszenie Wsparcia Technicznego</h2>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400">Wypełnij formularz, aby zgłosić problem techniczny lub błąd w grze.</p>
+                    </div>
                 </div>
 
-                <form id="support-form" class="space-y-6" onsubmit="sendSupportTicket(event)">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form id="support-form" onsubmit="handleSupportSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Adres e-mail</label>
-                            <input type="email" id="ticket-email" required placeholder="twoj@email.com" class="w-full bg-zinc-50 dark:bg-[#252525] border border-zinc-300 dark:border-zinc-700 px-4 py-3 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-wtpRed">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1" for="user_email">
+                                Adres E-mail <span class="text-wtpRed">*</span>
+                            </label>
+                            <input type="email" id="user_email" required placeholder="twoj@email.com" 
+                                   class="w-full p-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-wtpRed">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Nick na Roblox</label>
-                            <input type="text" id="ticket-roblox" required placeholder="Nazwa użytkownika Roblox" class="w-full bg-zinc-50 dark:bg-[#252525] border border-zinc-300 dark:border-zinc-700 px-4 py-3 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-wtpRed">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1" for="roblox_nick">
+                                Nick Roblox <span class="text-wtpRed">*</span>
+                            </label>
+                            <input type="text" id="roblox_nick" required placeholder="RobloxUsername" 
+                                   class="w-full p-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-wtpRed">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1" for="discord_nick">
+                                Nick Discord <span class="text-wtpRed">*</span>
+                            </label>
+                            <input type="text" id="discord_nick" required placeholder="discord_user" 
+                                   class="w-full p-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-wtpRed">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Nick na Discord</label>
-                        <input type="text" id="ticket-discord" required placeholder="np. nazwa#0000 lub nazwa" class="w-full bg-zinc-50 dark:bg-[#252525] border border-zinc-300 dark:border-zinc-700 px-4 py-3 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-wtpRed">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1" for="bug_description">
+                            Opis Błędu / Zgłoszenia <span class="text-wtpRed">*</span>
+                        </label>
+                        <textarea id="bug_description" rows="5" required placeholder="Opisz dokładnie napotkany problem..." 
+                                  class="w-full p-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-wtpRed"></textarea>
                     </div>
 
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">Opis błędu / Problem</label>
-                            <span id="char-count" class="text-[10px] text-zinc-500 font-bold">0 / 500</span>
-                        </div>
-                        <textarea id="ticket-message" maxlength="500" rows="5" required placeholder="Opisz dokładnie, co się stało..." class="w-full bg-zinc-50 dark:bg-[#252525] border border-zinc-300 dark:border-zinc-700 px-4 py-3 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-wtpRed"></textarea>
-                    </div>
-
-                    <button type="submit" id="ticket-submit-btn" class="wtp-btn w-full">
-                        <span>Wyślij zgłoszenie</span>
+                    <button type="submit" id="submit-btn" class="wtp-btn w-full">
+                        <span>Wyślij Zgłoszenie</span>
                     </button>
-
-                    <div id="ticket-status" class="hidden text-center text-sm font-semibold p-4 mt-4"></div>
+                    
+                    <div id="form-status" class="hidden p-4 text-sm font-semibold text-center"></div>
                 </form>
             </div>
         </section>
@@ -314,6 +322,9 @@
     </footer>
 
     <script>
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx37qFjoQ0oXmkuvB9eOxZgzVSMdb-QfeODAHzDRZJOYP-oCQWjx-RKIS0GUFB2h3bR/exec'; 
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1539659755843489964/mGmQNG8g1RMdwx1DO68PYFNKe4AQ3_B1PTTF_Y9kN228x00LDtf8SAp4XIfSnHR9LMBY';
+
         function toggleTheme() {
             const htmlRoot = document.getElementById('html-root');
             const themeText = document.getElementById('theme-text');
@@ -332,81 +343,70 @@
             }
         }
 
-       async function sendSupportTicket(event) {
-            event.preventDefault();
+        async function handleSupportSubmit(e) {
+            e.preventDefault();
 
-            const email = document.getElementById('ticket-email').value;
-            const roblox = document.getElementById('ticket-roblox').value;
-            const discord = document.getElementById('ticket-discord').value;
-            const message = document.getElementById('ticket-message').value;
-            const submitBtn = document.getElementById('ticket-submit-btn');
-            const statusDiv = document.getElementById('ticket-status');
+            const submitBtn = document.getElementById('submit-btn');
+            const statusDiv = document.getElementById('form-status');
+            
+            const email = document.getElementById('user_email').value;
+            const roblox = document.getElementById('roblox_nick').value;
+            const discord = document.getElementById('discord_nick').value;
+            const bug = document.getElementById('bug_description').value;
 
-            const randomTicketId = 'LIW-' + Math.floor(1000 + Math.random() * 9000);
+            const ticketId = 'LIW-' + Math.floor(10000000 + Math.random() * 90000000);
 
             submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.7';
-            statusDiv.className = 'text-center text-sm font-semibold p-4 mt-4 text-zinc-600 dark:text-zinc-300';
-            statusDiv.textContent = 'Wysyłanie zgłoszenia...';
+            submitBtn.innerText = 'Wysyłanie...';
+            statusDiv.className = 'p-4 text-sm font-semibold text-center text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30';
+            statusDiv.innerText = 'Przetwarzanie Twojego zgłoszenia...';
             statusDiv.classList.remove('hidden');
 
-            const webhookUrl = 'https://discord.com/api/webhooks/1539659755843489964/mGmQNG8g1RMdwx1DO68PYFNKe4AQ3_B1PTTF_Y9kN228x00LDtf8SAp4XIfSnHR9LMBY';
-
-            const payload = {
+            const discordPayload = {
                 embeds: [{
-                    title: `🛠️ Nowe zgłoszenie wsparcia technicznego [${randomTicketId}]`,
-                    color: 14245400,
+                    title: "🚨 Nowe Zgłoszenie Techniczne",
+                    color: 14229016, 
                     fields: [
-                        { name: '👤 Nick Roblox', value: roblox, inline: true },
-                        { name: '💬 Nick Discord', value: discord, inline: true },
-                        { name: '📧 Adres E-mail', value: email, inline: false },
-                        { name: '📝 Opis błędu / Problem', value: message, inline: false }
+                        { name: "🎫 ID Zgłoszenia", value: `\`${ticketId}\``, inline: true },
+                        { name: "📧 E-mail", value: email, inline: true },
+                        { name: "🎮 Roblox Nick", value: roblox, inline: true },
+                        { name: "💬 Discord Nick", value: discord, inline: true },
+                        { name: "📝 Opis Problemu", value: bug }
                     ],
-                    footer: { text: `Life in Warsaw • ID Zgłoszenia: ${randomTicketId}` },
+                    footer: {
+                        text: "Life in Warsaw • System Obsługi Zgłoszeń"
+                    },
                     timestamp: new Date().toISOString()
                 }]
             };
 
             try {
-                const response = await fetch(webhookUrl, {
+                const discordResponse = await fetch(DISCORD_WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(discordPayload)
                 });
 
-                if (response.ok || response.status === 204) {
-                    statusDiv.className = 'text-center text-sm font-semibold p-4 mt-4 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-300 dark:border-green-800';
-                    statusDiv.innerHTML = `<strong>Twoje zgłoszenie zostało pomyślnie zarejestrowane.</strong> Doceniamy Twoje zgłoszenie. W najbliższym czasie nasz zespół wsparcia technicznego skontaktuje się z Tobą. ID zgłoszenia: <strong class="underline">${randomTicketId}</strong>`;
-                    document.getElementById('support-form').reset();
-                    document.getElementById('char-count').textContent = '0 / 500';
-                } else {
-                    throw new Error('Błąd serwera');
+                if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbx37qFjoQ0oXmkuvB9eOxZgzVSMdb-QfeODAHzDRZJOYP-oCQWjx-RKIS0GUFB2h3bR/exec') {
+                    await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ticketId, email, roblox, discord, bug })
+                    });
                 }
-            } catch (error) {
-                statusDiv.className = 'text-center text-sm font-semibold p-4 mt-4 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-300 dark:border-red-800';
-                statusDiv.textContent = 'Wystąpił błąd podczas wysyłania. Spróbuj później.';
+
+                statusDiv.className = 'p-4 text-sm font-semibold text-center text-green-700 bg-green-100 dark:bg-green-900/30';
+                statusDiv.innerText = `Pomyślnie wysłano zgłoszenie #${ticketId}! Potwierdzenie wysłano na e-mail.`;
+                document.getElementById('support-form').reset();
+            } catch (err) {
+                console.error(err);
+                statusDiv.className = 'p-4 text-sm font-semibold text-center text-red-700 bg-red-100 dark:bg-red-900/30';
+                statusDiv.innerText = 'Wystąpił błąd podczas wysyłania zgłoszenia. Spróbuj ponownie później.';
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.style.opacity = '1';
+                submitBtn.innerText = 'Wyślij Zgłoszenie';
             }
-        }
-
-        const messageInput = document.getElementById('ticket-message');
-        const charCount = document.getElementById('char-count');
-        
-        if (messageInput) {
-            messageInput.addEventListener('input', () => {
-                const length = messageInput.value.length;
-                charCount.textContent = `${length} / 500`;
-                
-                if (length > 450) {
-                    charCount.classList.remove('text-zinc-500');
-                    charCount.classList.add('text-red-500');
-                } else {
-                    charCount.classList.remove('text-red-500');
-                    charCount.classList.add('text-zinc-500');
-                }
-            });
         }
 
         window.addEventListener('DOMContentLoaded', () => {
