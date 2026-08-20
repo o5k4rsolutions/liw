@@ -343,7 +343,7 @@
             }
         }
 
-        async function handleSupportSubmit(e) {
+async function handleSupportSubmit(e) {
             e.preventDefault();
 
             const submitBtn = document.getElementById('submit-btn');
@@ -381,20 +381,23 @@
             };
 
             try {
-                const discordResponse = await fetch(DISCORD_WEBHOOK_URL, {
+                const discordPromise = fetch(DISCORD_WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(discordPayload)
                 });
 
+                let sheetsPromise = Promise.resolve();
                 if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbx37qFjoQ0oXmkuvB9eOxZgzVSMdb-QfeODAHzDRZJOYP-oCQWjx-RKIS0GUFB2h3bR/exec') {
-                    await fetch(APPS_SCRIPT_URL, {
+                    sheetsPromise = fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ ticketId, email, roblox, discord, bug })
                     });
                 }
+
+                await Promise.all([discordPromise, sheetsPromise]);
 
                 statusDiv.className = 'p-4 text-sm font-semibold text-center text-green-700 bg-green-100 dark:bg-green-900/30';
                 statusDiv.innerText = `Pomyślnie wysłano zgłoszenie #${ticketId}! Potwierdzenie wysłano na e-mail.`;
