@@ -322,7 +322,7 @@
     </footer>
 
     <script>
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJgUgtFX0PjDHf5jQtC8VCaOMWcsVuET_ObtmIBcboQ58qHtNhtg3TmKapmHp75Zx1/exec'; 
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxf-C018n9lw-9dRjIZF9inQiUg5VNv1JHtrNd_UE1IdVjT8oegrfC8mPNaQl0h7OSuyg/exec'; 
         const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1539659755843489964/mGmQNG8g1RMdwx1DO68PYFNKe4AQ3_B1PTTF_Y9kN228x00LDtf8SAp4XIfSnHR9LMBY';
 
         function toggleTheme() {
@@ -388,7 +388,7 @@ async function handleSupportSubmit(e) {
                 });
 
                 let sheetsPromise = Promise.resolve();
-                if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbwJgUgtFX0PjDHf5jQtC8VCaOMWcsVuET_ObtmIBcboQ58qHtNhtg3TmKapmHp75Zx1/exec') {
+                if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbxf-C018n9lw-9dRjIZF9inQiUg5VNv1JHtrNd_UE1IdVjT8oegrfC8mPNaQl0h7OSuyg/exec') {
                     sheetsPromise = fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
