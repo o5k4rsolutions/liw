@@ -1,0 +1,7 @@
+# Konfiguracja z poufnymi danymi
+config.js
+
+# Foldery systemowe i edytorów
+.DS_Store
+node_modules/
+.vscode/
