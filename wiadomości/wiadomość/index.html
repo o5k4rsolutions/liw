@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life in Warsaw - Panel Zgłoszeń</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // Domyślny klucz publiczny (możesz zmienić w konfiguracji w aplikacji)
+            emailjs.init("RQpHUepRmkBMU3_BG"); 
+        })();
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+
+    <header class="bg-black text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-[#d91e18] text-white p-2 rounded-lg font-bold text-xl tracking-wider">LIW</div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight">Life in Warsaw</h1>
+                    <p class="text-xs text-gray-400">System Obsługi Zgłoszeń &bull; Service: <span class="text-red-400 font-mono">service_ra4y029</span></p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="openConfigModal()" class="bg-gray-800 hover:bg-gray-700 text-xs px-3 py-2 rounded-lg border border-gray-700 transition flex items-center space-x-2">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Konfiguracja Public Key</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Lewa kolumna: Formularz nowego zgłoszenia -->
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 lg:col-span-1 flex flex-col">
+            <h2 class="text-lg font-bold text-gray-900 mb-2 flex items-center space-x-2">
+                <i class="fa-solid fa-paper-plane text-[#d91e18]"></i>
+                <span>Nowa Wiadomość / Zgłoszenie</span>
+            </h2>
+            <p class="text-xs text-gray-500 mb-5">
+                Wpisz dane klienta oraz treść. Wiadomość trafi bezpośrednio w szablon <code class="bg-gray-100 p-1 rounded font-mono text-xs">template_3r4gkqw</code>.
+            </p>
+
+            <form id="ticketForm" onsubmit="handleSendTicket(event)" class="space-y-4 flex-grow flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1">E-mail Klienta:</label>
+                        <input type="email" id="clientEmail" required placeholder="klient@example.com" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#d91e18]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1">Tytuł / Kategoria (topic):</label>
+                        <select id="ticketTopic" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#d91e18]">
+                            <option value="Pomoc Techniczna">Pomoc Techniczna</option>
+                            <option value="Współpraca i Media">Współpraca i Media</option>
+                            <option value="Zgłoszenie Błędu">Zgłoszenie Błędu</option>
+                            <option value="Inne pytania">Inne pytania</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1">Treść wiadomości:</label>
+                        <textarea id="initialMessage" rows="5" required placeholder="Wpisz treść, która wyświetli się w szablonie e-maila..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#d91e18]"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full mt-4 bg-[#d91e18] hover:bg-[#b51814] text-white font-medium py-2.5 px-4 rounded-lg text-sm transition shadow-md flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-envelope-circle-check"></i>
+                    <span>Wyślij e-mail przez EmailJS</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- Prawa kolumna: Lista zgłoszeń z historią wątku -->
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 lg:col-span-2 flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-[#d91e18]"></i>
+                    <span>Wątki Zgłoszeń i Historia</span>
+                </h2>
+                <span id="ticketCount" class="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full font-semibold">0 zgłoszeń</span>
+            </div>
+            <p class="text-xs text-gray-500 mb-5">
+                Rozwiń zgłoszenie, aby zobaczyć całą konwersację lub zapisać kolejne wiadomości do historii wysłanych do klienta.
+            </p>
+
+            <div id="ticketsContainer" class="space-y-4 overflow-y-auto max-h-[600px] pr-2">
+                <!-- Dynamicznie wstawiane -->
+                <div id="emptyState" class="text-center py-12 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">
+                    <i class="fa-regular fa-folder-open text-4xl mb-2"></i>
+                    <p class="text-sm">Brak zapisanych zgłoszeń. Utwórz pierwsze zgłoszenie po lewej stronie.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="configModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+            <h3 class="text-lg font-bold text-gray-900">Konfiguracja EmailJS Public Key</h3>
+            <p class="text-xs text-gray-500">
+                Wklej swój publiczny klucz EmailJS z panelu (zostanie zapisany w pamięci przeglądarki).
+            </p>
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1">Public Key:</label>
+                <input type="text" id="publicKeyInput" placeholder="np. user_xxxxxxxxxxxxx" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#d91e18]">
+            </div>
+            <div class="flex justify-end space-x-3 pt-2">
+                <button onclick="closeConfigModal()" class="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Anuluj</button>
+                <button onclick="savePublicKey()" class="px-4 py-2 text-sm bg-[#d91e18] text-white rounded-lg hover:bg-[#b51814]">Zapisz klucz</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-lg text-sm flex items-center space-x-3 z-50">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-green-400"></i>
+        <span id="toastMessage">Komunikat systemowy</span>
+    </div>
+
+    <script>
+        let tickets = JSON.parse(localStorage.getItem('liw_tickets_v2') || '[]');
+
+        // Zdefiniowane przez Ciebie ID w EmailJS
+        const SERVICE_ID = "service_ra4y029";
+        const TEMPLATE_ID = "template_3r4gkqw";
+
+        window.onload = function() {
+            const savedKey = localStorage.getItem('liw_public_key');
+            if (savedKey) {
+                emailjs.init(savedKey);
+                document.getElementById('publicKeyInput').value = savedKey;
+            }
+            renderTickets();
+        };
+
+        function openConfigModal() {
+            document.getElementById('configModal').classList.remove('hidden');
+            document.getElementById('configModal').classList.add('flex');
+        }
+
+        function closeConfigModal() {
+            document.getElementById('configModal').classList.remove('flex');
+            document.getElementById('configModal').classList.add('hidden');
+        }
+
+        function savePublicKey() {
+            const key = document.getElementById('publicKeyInput').value.trim();
+            if (key) {
+                localStorage.setItem('liw_public_key', key);
+                emailjs.init(key);
+                closeConfigModal();
+                showToast("Klucz publiczny został zapisany!", "success");
+            } else {
+                showToast("Wpisz poprawny klucz publiczny.", "error");
+            }
+        }
+
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+
+            msgEl.textContent = message;
+            if (type === "success") {
+                iconEl.className = "fa-solid fa-circle-check text-green-400";
+            } else {
+                iconEl.className = "fa-solid fa-triangle-exclamation text-red-400";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 4000);
+        }
+
+        // Obsługa wysyłania pierwszego zgłoszenia przez EmailJS
+        async function handleSendTicket(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const email = document.getElementById('clientEmail').value.trim();
+            const topic = document.getElementById('ticketTopic').value;
+            const message = document.getElementById('initialMessage').value.trim();
+
+            const ticketId = "LIW-" + Math.floor(100000 + Math.random() * 900000);
+
+            // Parametry mapujące się na Twój szablon EmailJS
+            const templateParams = {
+                to_email: email,
+                user_email: email, // Ważne dla pola Reply-To
+                ticket_id: ticketId,
+                topic: topic,
+                message: message // Trafia w znacznik {{{message}}} w szablonie
+            };
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Wysyłanie maila...</span>`;
+
+            try {
+                await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+                
+                const newTicket = {
+                    id: ticketId,
+                    email: email,
+                    topic: topic,
+                    createdAt: new Date().toLocaleString(),
+                    messages: [
+                        { sender: 'support', text: message, time: new Date().toLocaleTimeString() }
+                    ]
+                };
+
+                tickets.unshift(newTicket);
+                localStorage.setItem('liw_tickets_v2', JSON.stringify(tickets));
+
+                document.getElementById('ticketForm').reset();
+                renderTickets();
+                showToast("E-mail został pomyślnie wysłany i zapisany w historii!");
+            } catch (error) {
+                console.error("Błąd EmailJS:", error);
+                // Zapisujemy lokalnie nawet przy braku poprawnego klucza publicznego, by ułatwić testowanie
+                const newTicket = {
+                    id: ticketId,
+                    email: email,
+                    topic: topic,
+                    createdAt: new Date().toLocaleString(),
+                    messages: [
+                        { sender: 'support', text: message, time: new Date().toLocaleTimeString() }
+                    ]
+                };
+                tickets.unshift(newTicket);
+                localStorage.setItem('liw_tickets_v2', JSON.stringify(tickets));
+                renderTickets();
+                showToast("Zapisano lokalnie (Błąd wysyłki EmailJS - sprawdź klucz w ustawieniach)", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-envelope-circle-check"></i><span>Wyślij e-mail przez EmailJS</span>`;
+            }
+        }
+
+        // Dopisanie kolejnej wiadomości w wątku
+        function appendReply(event, ticketId) {
+            event.preventDefault();
+            const replyInput = document.getElementById(`reply-input-${ticketId}`);
+            const replyText = replyInput.value.trim();
+            if (!replyText) return;
+
+            const ticket = tickets.find(t => t.id === ticketId);
+            if (ticket) {
+                ticket.messages.push({
+                    sender: 'support',
+                    text: replyText,
+                    time: new Date().toLocaleTimeString()
+                });
+                localStorage.setItem('liw_tickets_v2', JSON.stringify(tickets));
+                replyInput.value = '';
+                renderTickets();
+                showToast("Odpowiedź została dodana do historii wątku.");
+            }
+        }
+
+        // Renderowanie listy zgłoszeń
+        function renderTickets() {
+            const container = document.getElementById('ticketsContainer');
+            const countEl = document.getElementById('ticketCount');
+            countEl.textContent = `${tickets.length} zgłoszeń`;
+
+            if (tickets.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">
+                        <i class="fa-regular fa-folder-open text-4xl mb-2"></i>
+                        <p class="text-sm">Brak zapisanych zgłoszeń. Utwórz pierwsze zgłoszenie po lewej stronie.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            tickets.forEach(ticket => {
+                const card = document.createElement('div');
+                card.className = "border border-gray-200 rounded-xl p-4 bg-white shadow-xs transition hover:shadow-md";
+
+                let messagesHtml = '';
+                ticket.messages.forEach(msg => {
+                    messagesHtml += `
+                        <div class="flex justify-end my-2">
+                            <div class="max-w-[85%] rounded-xl px-4 py-2.5 text-sm bg-red-50 text-gray-800 border border-red-100">
+                                <div class="flex justify-between items-center mb-1 text-[10px] text-gray-500 space-x-3">
+                                    <span class="font-semibold">Zespół Life in Warsaw</span>
+                                    <span>${msg.time}</span>
+                                </div>
+                                <p class="whitespace-pre-wrap">${escapeHtml(msg.text)}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start cursor-pointer select-none" onclick="toggleAccordion('${ticket.id}')">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-red-100 text-[#d91e18] text-xs font-bold px-2 py-0.5 rounded font-mono">${ticket.id}</span>
+                                <span class="text-xs text-gray-500">${ticket.createdAt}</span>
+                            </div>
+                            <h3 class="font-bold text-gray-900 mt-1">${escapeHtml(ticket.topic)}</h3>
+                            <p class="text-xs text-gray-600 mt-0.5"><i class="fa-regular fa-envelope mr-1"></i> ${escapeHtml(ticket.email)}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">${ticket.messages.length} wpisów</span>
+                            <i id="icon-${ticket.id}" class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Rozwijana sekcja z historią i nową wiadomością -->
+                    <div id="content-${ticket.id}" class="hidden mt-4 pt-4 border-t border-gray-100 space-y-3">
+                        <div class="bg-gray-50 p-3 rounded-xl max-h-60 overflow-y-auto space-y-2">
+                            ${messagesHtml}
+                        </div>
+
+                        <!-- Formularz kolejnej wiadomości do klienta w wątku -->
+                        <form onsubmit="appendReply(event, '${ticket.id}')" class="flex gap-2 mt-3">
+                            <input type="text" id="reply-input-${ticket.id}" placeholder="Dopisz kolejną wiadomość w tym wątku..." class="flex-grow px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#d91e18]">
+                            <button type="submit" class="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                Zapisz wpis
+                            </button>
+                        </form>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleAccordion(ticketId) {
+            const content = document.getElementById(`content-${ticketId}`);
+            const icon = document.getElementById(`icon-${ticketId}`);
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+</body>
+</html>
