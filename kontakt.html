@@ -148,7 +148,7 @@
             
             <div class="max-w-[1300px] mx-auto px-4 py-16 md:py-24 relative z-10 text-center">
                 <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Kontakt</h1>
-                <p class="text-zinc-300 text-sm md:text-base max-w-xl mx-auto">Skontaktuj się z nami, zgłoś błąd techniczny lub sprawdź informacje o projekcie Life in Warsaw.</p>
+                <p class="text-zinc-300 text-sm md:text-base max-w-xl mx-auto">Skontaktuj się z nami, prześlij zgłoszenie lub sprawdź informacje o projekcie Life in Warsaw.</p>
             </div>
         </section>
 
@@ -192,17 +192,31 @@
                         <i class="fa-solid fa-headset"></i>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">Zgłoszenie do Działu Technicznego</h2>
-                        <p class="text-xs text-zinc-500 dark:text-zinc-400">Wypełnij poniższy formularz, aby przesłać zgłoszenie błędu bezpośrednio do twórców.</p>
+                        <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">Formularz kontaktowy</h2>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400">Wypełnij poniższy formularz, aby przesłać zgłoszenie bezpośrednio do administracji.</p>
                     </div>
                 </div>
 
                 <form id="support-form" class="space-y-6" onsubmit="handleFormSubmit(event)">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Adres E-mail</label>
                             <input type="email" id="sup-email" required placeholder="twoj@email.com" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
                         </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Temat zgłoszenia</label>
+                            <select id="sup-topic" required class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
+                                <option value="" disabled selected>Wybierz temat...</option>
+                                <option value="Błąd Techniczny">Błąd Techniczny</option>
+                                <option value="Odwołanie od Bana">Odwołanie od Bana</option>
+                                <option value="Sugestia">Sugestia</option>
+                                <option value="Współpraca">Współpraca</option>
+                                <option value="Kontakt z prezesem">Kontakt z prezesem</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Nick Roblox</label>
                             <input type="text" id="sup-roblox" required placeholder="Nazwa użytkownika" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
@@ -215,10 +229,10 @@
 
                     <div>
                         <div class="flex justify-between items-center mb-2">
-                            <label class="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">Opis błędu / Problem</label>
+                            <label class="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">Treść wiadomości / Opis</label>
                             <span id="char-count" class="text-xs text-zinc-400">0 / 500</span>
                         </div>
-                        <textarea id="sup-message" required maxlength="500" rows="4" placeholder="Opisz napotkany problem techniczny (maks. 500 znaków)..." class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed resize-none" oninput="updateCharCount()"></textarea>
+                        <textarea id="sup-message" required maxlength="500" rows="4" placeholder="Opisz szczegółowo swoją sprawę (maks. 500 znaków)..." class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed resize-none" oninput="updateCharCount()"></textarea>
                     </div>
 
                     <div id="form-status" class="hidden text-sm p-4 font-semibold"></div>
@@ -352,6 +366,7 @@
             event.preventDefault();
 
             const email = document.getElementById('sup-email').value.trim();
+            const topic = document.getElementById('sup-topic').value;
             const roblox = document.getElementById('sup-roblox').value.trim();
             const discord = document.getElementById('sup-discord').value.trim();
             const message = document.getElementById('sup-message').value.trim();
@@ -368,13 +383,14 @@
             
             const discordPayload = {
                 embeds: [{
-                    title: `🛠️ Odp. Zgłoszenie: ${ticketId}`,
+                    title: `🛠️ Zgłoszenie: ${ticketId}`,
                     color: 14245400,
                     fields: [
+                        { name: '📌 Temat', value: topic, inline: false },
                         { name: '👤 Nick Roblox', value: roblox, inline: true },
                         { name: '💬 Nick Discord', value: discord, inline: true },
                         { name: '📧 Adres E-mail', value: email, inline: false },
-                        { name: '📝 Treść błędu', value: message, inline: false }
+                        { name: '📝 Treść wiadomości', value: message, inline: false }
                     ],
                     timestamp: new Date().toISOString()
                 }]
@@ -393,6 +409,7 @@
 
                 const emailParams = {
                     ticket_id: ticketId,
+                    topic: topic,
                     roblox_nick: roblox,
                     email: email,      
                     discord: discord,
