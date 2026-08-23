@@ -8,10 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="config.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            emailjs.init("MvnEcMGrMQXtz5vMa");
+            emailjs.init(CONFIG.EMAILJS_PUBLIC_KEY);
         })();
     </script>
     <script>
@@ -379,7 +380,7 @@
             submitBtn.innerHTML = '<span>Wysyłanie...</span>';
             statusDiv.className = 'hidden text-sm p-4 font-semibold rounded';
 
-            const webhookUrl = 'https://discord.com/api/webhooks/1539659755843489964/mGmQNG8g1RMdwx1DO68PYFNKe4AQ3_B1PTTF_Y9kN228x00LDtf8SAp4XIfSnHR9LMBY';
+            const webhookUrl = CONFIG.DISCORD_WEBHOOK_URL;
             
             const discordPayload = {
                 embeds: [{
@@ -416,7 +417,7 @@
                     message: message
                 };
 
-                await emailjs.send('service_ydvy0ym', 'template_hv49lmp', emailParams);
+                await emailjs.send(CONFIG.EMAILJS_SERVICE_ID, CONFIG.EMAILJS_TEMPLATE_ID, emailParams);
 
                 statusDiv.textContent = `Sukces! Twoje zgłoszenie ${ticketId} zostało wysłane. Wysłano również potwierdzenie na Twój e-mail.`;
                 statusDiv.className = 'block text-sm p-4 font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300';
