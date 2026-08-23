@@ -105,6 +105,24 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Animacje przejścia formularza i budowania elementu */
+        .form-slide-out {
+            animation: slideOutLeft 0.6s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+        @keyframes slideOutLeft {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(-120%); opacity: 0; }
+        }
+
+        @keyframes dropDownTop {
+            0% { transform: translateY(-50px) scale(0.8); opacity: 0; }
+            60% { transform: translateY(10px) scale(1.02); opacity: 1; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .animate-build {
+            animation: dropDownTop 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
     </style>
 </head>
 <body class="bg-[#f0f0f0] text-[#222222] dark:bg-[#121212] dark:text-[#e0e0e0] min-h-screen flex flex-col justify-between">
@@ -187,7 +205,7 @@
 
             </div>
 
-            <div class="max-w-4xl mx-auto bg-white dark:bg-[#1e1e1e] border border-zinc-200 dark:border-zinc-800 wtp-shadow p-8 md:p-12">
+            <div class="max-w-4xl mx-auto bg-white dark:bg-[#1e1e1e] border border-zinc-200 dark:border-zinc-800 wtp-shadow p-8 md:p-12 relative overflow-hidden">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="w-10 h-10 bg-wtpRed text-white rounded-full flex items-center justify-center text-lg shadow-md">
                         <i class="fa-solid fa-headset"></i>
@@ -198,52 +216,70 @@
                     </div>
                 </div>
 
-                <form id="support-form" class="space-y-6" onsubmit="handleFormSubmit(event)">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Adres E-mail</label>
-                            <input type="email" id="sup-email" required placeholder="twoj@email.com" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
+                <div id="form-container-wrapper">
+                    <form id="support-form" class="space-y-6" onsubmit="handleFormSubmit(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Adres E-mail</label>
+                                <input type="email" id="sup-email" required placeholder="twoj@email.com" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Temat zgłoszenia</label>
+                                <div class="relative" id="custom-select-wrapper">
+                                    <input type="hidden" id="sup-topic" required value="">
+                                    <div id="custom-select-trigger" onclick="toggleCustomSelect()" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed cursor-pointer flex justify-between items-center select-none">
+                                        <span id="custom-select-selected-text" class="text-zinc-400">Wybierz temat...</span>
+                                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" id="custom-select-arrow"></i>
+                                    </div>
+                                    <div id="custom-select-dropdown" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 shadow-lg z-30 hidden overflow-hidden">
+                                        <div class="custom-option px-4 py-3 text-sm hover:bg-wtpRed hover:text-white cursor-pointer transition" data-value="Błąd Techniczny">Błąd Techniczny</div>
+                                        <div class="custom-option px-4 py-3 text-sm hover:bg-wtpRed hover:text-white cursor-pointer transition" data-value="Odwołanie od Bana">Odwołanie od Bana</div>
+                                        <div class="custom-option px-4 py-3 text-sm hover:bg-wtpRed hover:text-white cursor-pointer transition" data-value="Sugestia">Sugestia</div>
+                                        <div class="custom-option px-4 py-3 text-sm hover:bg-wtpRed hover:text-white cursor-pointer transition" data-value="Współpraca">Współpraca</div>
+                                        <div class="custom-option px-4 py-3 text-sm hover:bg-wtpRed hover:text-white cursor-pointer transition" data-value="Kontakt z prezesem">Kontakt z prezesem</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Temat zgłoszenia</label>
-                            <select id="sup-topic" required class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
-                                <option value="" disabled selected>Wybierz temat...</option>
-                                <option value="Błąd Techniczny">Błąd Techniczny</option>
-                                <option value="Odwołanie od Bana">Odwołanie od Bana</option>
-                                <option value="Sugestia">Sugestia</option>
-                                <option value="Współpraca">Współpraca</option>
-                                <option value="Kontakt z prezesem">Kontakt z prezesem</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Nick Roblox</label>
+                                <input type="text" id="sup-roblox" required placeholder="Nazwa użytkownika" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Nick Discord</label>
+                                <input type="text" id="sup-discord" required placeholder="np. nazwa#0000" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
+                            </div>
+                        </div>
+
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Nick Roblox</label>
-                            <input type="text" id="sup-roblox" required placeholder="Nazwa użytkownika" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">Treść wiadomości / Opis</label>
+                                <span id="char-count" class="text-xs text-zinc-400">0 / 500</span>
+                            </div>
+                            <textarea id="sup-message" required maxlength="500" rows="4" placeholder="Opisz szczegółowo swoją sprawę (maks. 500 znaków)..." class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed resize-none" oninput="updateCharCount()"></textarea>
                         </div>
+
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">Nick Discord</label>
-                            <input type="text" id="sup-discord" required placeholder="np. nazwa#0000" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed">
+                            <button type="submit" id="submit-btn" class="wtp-btn w-full md:w-auto">
+                                <span>Wyślij zgłoszenie &raquo;</span>
+                            </button>
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">Treść wiadomości / Opis</label>
-                            <span id="char-count" class="text-xs text-zinc-400">0 / 500</span>
-                        </div>
-                        <textarea id="sup-message" required maxlength="500" rows="4" placeholder="Opisz szczegółowo swoją sprawę (maks. 500 znaków)..." class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-wtpRed resize-none" oninput="updateCharCount()"></textarea>
+                <div id="success-state-container" class="hidden text-center py-12">
+                    <div class="w-16 h-16 bg-wtpRed text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-4 animate-build shadow-lg">
+                        <i class="fa-solid fa-check"></i>
                     </div>
+                    <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-2 animate-build">Zgłoszenie wysłane pomyślnie!</h3>
+                    <p id="success-ticket-desc" class="text-sm text-zinc-500 dark:text-zinc-400 mb-6 animate-build">Twoje zgłoszenie zostało przesłane do administracji. Potwierdzenie zostało wysłane na e-mail.</p>
+                    <button onclick="location.reload()" class="wtp-btn animate-build">
+                        <span>Otwórz ponownie formularz</span>
+                    </button>
+                </div>
 
-                    <div id="form-status" class="hidden text-sm p-4 font-semibold"></div>
-
-                    <div>
-                        <button type="submit" id="submit-btn" class="wtp-btn w-full md:w-auto">
-                            <span>Wyślij zgłoszenie &raquo;</span>
-                        </button>
-                    </div>
-                </form>
             </div>
         </section>
     </main>
@@ -338,6 +374,37 @@
     </footer>
 
     <script>
+        function toggleCustomSelect() {
+            const dropdown = document.getElementById('custom-select-dropdown');
+            const arrow = document.getElementById('custom-select-arrow');
+            dropdown.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+        }
+
+        document.querySelectorAll('.custom-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const text = this.textContent;
+                
+                document.getElementById('sup-topic').value = value;
+                const selectedText = document.getElementById('custom-select-selected-text');
+                selectedText.textContent = text;
+                selectedText.classList.remove('text-zinc-400');
+                selectedText.classList.add('text-zinc-900', 'dark:text-white');
+                
+                document.getElementById('custom-select-dropdown').classList.add('hidden');
+                document.getElementById('custom-select-arrow').classList.remove('rotate-180');
+            });
+        });
+
+        window.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('custom-select-wrapper');
+            if (!wrapper.contains(e.target)) {
+                document.getElementById('custom-select-dropdown').classList.add('hidden');
+                document.getElementById('custom-select-arrow').classList.remove('rotate-180');
+            }
+        });
+
         function toggleTheme() {
             const htmlRoot = document.getElementById('html-root');
             const themeText = document.getElementById('theme-text');
@@ -368,17 +435,21 @@
 
             const email = document.getElementById('sup-email').value.trim();
             const topic = document.getElementById('sup-topic').value;
+            
+            if(!topic) {
+                alert('Proszę wybrać temat zgłoszenia.');
+                return;
+            }
+
             const roblox = document.getElementById('sup-roblox').value.trim();
             const discord = document.getElementById('sup-discord').value.trim();
             const message = document.getElementById('sup-message').value.trim();
             const submitBtn = document.getElementById('submit-btn');
-            const statusDiv = document.getElementById('form-status');
 
             const ticketId = '#LIW-' + Math.floor(10000 + Math.random() * 90000);
 
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span>Wysyłanie...</span>';
-            statusDiv.className = 'hidden text-sm p-4 font-semibold rounded';
 
             const webhookUrl = CONFIG.DISCORD_WEBHOOK_URL;
             
@@ -419,17 +490,19 @@
 
                 await emailjs.send(CONFIG.EMAILJS_SERVICE_ID, CONFIG.EMAILJS_TEMPLATE_ID, emailParams);
 
-                statusDiv.textContent = `Sukces! Twoje zgłoszenie ${ticketId} zostało wysłane. Wysłano również potwierdzenie na Twój e-mail.`;
-                statusDiv.className = 'block text-sm p-4 font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300';
-                
-                document.getElementById('support-form').reset();
-                updateCharCount();
+                const formWrapper = document.getElementById('form-container-wrapper');
+                formWrapper.classList.add('form-slide-out');
+
+                setTimeout(() => {
+                    formWrapper.style.display = 'none';
+                    const successContainer = document.getElementById('success-state-container');
+                    successContainer.classList.remove('hidden');
+                    document.getElementById('success-ticket-desc').textContent = `Twoje zgłoszenie ${ticketId} zostało wysłane. Potwierdzenie wysłano na e-mail.`;
+                }, 600);
 
             } catch (error) {
                 console.error(error);
-                statusDiv.textContent = 'Wystąpił błąd podczas wysyłania zgłoszenia. Spróbuj ponownie później.';
-                statusDiv.className = 'block text-sm p-4 font-semibold bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300';
-            } finally {
+                alert('Wystąpił błąd podczas wysyłania zgłoszenia. Spróbuj ponownie później.');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<span>Wyślij zgłoszenie &raquo;</span>';
             }
